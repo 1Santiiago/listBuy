@@ -105,16 +105,16 @@ function HomeGeral() {
             </Button>
           </form>
         </div>
+
         <div className="space-y-1">
-          {lista.map((i) => (
+          {lista.length > 0 && (
             <CardGeral
-              key={i.id}
-              data={i}
-              onPriceChange={(value) => handlePrice(i.id, value)}
-              onQuantityChange={(value) => handleQuantity(i.id, value)}
-              onDelete={() => handleDelete(i.id)}
+              data={lista}
+              onPriceChange={handlePrice}
+              onQuantityChange={handleQuantity}
+              onDelete={handleDelete}
             />
-          ))}
+          )}
         </div>
         <div>Total R$: {total.toFixed(2)}</div>
       </div>
