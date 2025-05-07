@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import CardGeral from "./card/cardGeral";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { SendHorizontal } from "lucide-react";
 
 type Inputs = {
   itemBuy: string;
@@ -93,16 +94,18 @@ function HomeGeral() {
   };
 
   return (
-    <div className="min-h-screen p-6">
+    <div className="min-h-screen p-2">
       <div className="space-y-4">
         <h1 className="text-2xl font-bold">Lista de Compras</h1>
         <div className="flex gap-2">
-          <form onSubmit={handleSubmit(onSubmit)} className="flex w-full">
+          <form onSubmit={handleSubmit(onSubmit)} className="flex w-full gap-1">
             <Input placeholder="Adicionar item..." {...register("itemBuy")} />
-            <Button variant="outline">Adicionar</Button>
+            <Button variant="outline">
+              <SendHorizontal />
+            </Button>
           </form>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-1">
           {lista.map((i) => (
             <CardGeral
               key={i.id}

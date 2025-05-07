@@ -3,6 +3,13 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { X } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface CardGeralProps {
   data: any;
@@ -18,39 +25,60 @@ const CardGeral: React.FC<CardGeralProps> = ({
   onDelete,
 }) => {
   return (
-    <Card className="w-full">
-      <CardContent className="p-4 space-y-3">
-        <h2 className="text-lg font-semibold">{data.item}</h2>
+    <Card className="w-full p-5 rounded-2xl ">
+      <h2 className="text-xl font-bold text-center text-gray-800 mb-4">
+        {data.item}
+      </h2>
 
-        <div className="flex gap-4 justify-between">
-          <div className="flex flex-col">
-            <Label htmlFor="price">Preço</Label>
-            <Input
-              id="price"
-              type="number"
-              min={0}
-              value={data.price}
-              onChange={(e) => onPriceChange(parseFloat(e.target.value))}
-              placeholder="0.00"
-              className="w-32"
-            />
-          </div>
+      <CardContent className="space-y-4 flex gap-6 text-center">
+        <div className="space-y-1">
+          <Label htmlFor="price" className="text-sm font-medium text-gray-700">
+            Preço (R$)
+          </Label>
+          <Input
+            id="price"
+            type="number"
+            min={0}
+            value={data.price}
+            onFocus={(e) => {
+              if (parseFloat(e.target.value) === 0) {
+                e.target.value = "";
+              }
+            }}
+            onChange={(e) => onPriceChange(parseFloat(e.target.value))}
+            className="w-full text-center border-gray-300 focus:ring-2 focus:ring-blue-500 transition"
+          />
+        </div>
 
-          <div className="flex flex-col">
-            <Label htmlFor="quantity">Quantidade</Label>
-            <Input
-              id="quantity"
-              type="number"
-              min={0}
-              value={data.quantity}
-              onChange={(e) => onQuantityChange(parseInt(e.target.value))}
-              placeholder="0"
-              className="w-32"
-            />
-          </div>
-          <div className="flex justify-between items-center">
-            <X color="red" onClick={() => onDelete(data.id)} />
-          </div>
+        <div className="space-y-1">
+          <Label
+            htmlFor="quantity"
+            className="text-sm font-medium text-gray-700"
+          >
+            Quantidade
+          </Label>
+          <Select onValueChange={(value) => onQuantityChange(parseInt(value))}>
+            <SelectTrigger className="w-full border-gray-300 focus:ring-2 focus:ring-blue-500 transition">
+              <SelectValue placeholder="Selecione" />
+            </SelectTrigger>
+            <SelectContent>
+              {[...Array(10)].map((_, i) => (
+                <SelectItem key={i + 1} value={(i + 1).toString()}>
+                  {i + 1}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="flex justify-center pt-2">
+          <button
+            onClick={() => onDelete(data.id)}
+            className="text-red-500 hover:text-red-700 transition"
+            aria-label="Remover item"
+          >
+            <X size={28} />
+          </button>
         </div>
       </CardContent>
     </Card>
