@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import CardGeral from "./card/cardGeral";
@@ -14,10 +14,23 @@ type Item = {
   price: number;
   quantity: number;
 };
+
 function HomeGeral() {
-  const storedItems = JSON.parse(localStorage.getItem("lista") || "[]");
-  const [lista, setLista] = useState<Item[]>(storedItems);
-  useEffect(() => {});
+  const [lista, setLista] = useState<Item[]>([]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedItems = localStorage.getItem("lista");
+      if (storedItems) {
+        try {
+          setLista(JSON.parse(storedItems));
+        } catch (e) {
+          console.error("Erro ao ler do localStorage", e);
+        }
+      }
+    }
+  }, []);
+
   const saveToLocalStorage = (newLista: Item[]) => {
     localStorage.setItem("lista", JSON.stringify(newLista));
   };
@@ -54,10 +67,12 @@ function HomeGeral() {
     reset,
     formState: { errors },
   } = useForm<Inputs>();
+
   const total = lista.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const nome = data.itemBuy.trim();
     if (!nome) {
@@ -80,7 +95,7 @@ function HomeGeral() {
   return (
     <div className="min-h-screen p-6">
       <div className="space-y-4">
-        <h1 className="text-2xl font-bold  ">Lista de Compras</h1>
+        <h1 className="text-2xl font-bold">Lista de Compras</h1>
         <div className="flex gap-2">
           <form onSubmit={handleSubmit(onSubmit)} className="flex w-full">
             <Input placeholder="Adicionar item..." {...register("itemBuy")} />
@@ -94,7 +109,7 @@ function HomeGeral() {
               data={i}
               onPriceChange={(value) => handlePrice(i.id, value)}
               onQuantityChange={(value) => handleQuantity(i.id, value)}
-              onDelete={(value) => handleDelete(i.id)}
+              onDelete={() => handleDelete(i.id)}
             />
           ))}
         </div>
