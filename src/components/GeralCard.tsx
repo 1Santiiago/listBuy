@@ -105,6 +105,7 @@ function HomeGeral() {
         <TabsList>
           <TabsTrigger value="lista1">Lista 1</TabsTrigger>
           <TabsTrigger value="lista2">Lista 2</TabsTrigger>
+          <TabsTrigger value="total">Total carrinhos</TabsTrigger>
         </TabsList>
 
         <TabsContent value="lista1">
@@ -154,6 +155,33 @@ function HomeGeral() {
             {lista2
               .reduce((acc, item) => acc + item.price * item.quantity, 0)
               .toFixed(2)}
+          </div>
+        </TabsContent>
+        <TabsContent value="total">
+          <div className="mt-4 font-semibold text-2xl text-center">
+            <h1>
+              {" "}
+              Total Lista 1: R$
+              {lista1
+                .reduce((acc, item) => acc + item.price * item.quantity, 0)
+                .toFixed(2)}{" "}
+              <br />
+            </h1>
+            <h1>
+              {" "}
+              Total Lista 2: R$
+              {lista2
+                .reduce((acc, item) => acc + item.price * item.quantity, 0)
+                .toFixed(2)}{" "}
+              <br />
+            </h1>
+            <span className="text-green-600">
+              Total Geral: R${" "}
+              {lista1
+                .concat(lista2)
+                .reduce((acc, item) => acc + item.price * item.quantity, 0)
+                .toFixed(2)}
+            </span>
           </div>
         </TabsContent>
       </Tabs>
